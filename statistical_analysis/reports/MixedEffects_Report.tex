@@ -72,7 +72,7 @@ Concession Rate & $d = 0.33$ & $.009$ & CL $\uparrow$ (+36\% relative) \\
 \vspace{0.5em}
 \begin{tcolorbox}[colback=gray!5,colframe=gray!50!black,title=\textbf{Data Sources}]
 \begin{tabular}{ll}
-\textbf{Affect Analysis}: & \texttt{final\_evaluation\_results.csv} ($N_{rounds} = 6,342$) \\
+\textbf{Affect Analysis}: & \texttt{final\_evaluation\_results.csv} ($N_{rounds} = 2,114$) \\
 \textbf{Outcomes \& Moves}: & \texttt{experiment\_subject\_data.csv} ($N_{subjects} = 66$) \\
 \end{tabular}
 \end{tcolorbox}
@@ -149,7 +149,7 @@ Statistical significance: $\alpha = 0.05$. Notation: * $p < .05$, ** $p < .01$, 
 \subsection{Hierarchical Data Structure}
 
 \begin{itemize}
-    \item \textbf{Level 1}: Rounds (N$_{FC}$ = 3,402, N$_{CL}$ = 2,940)
+    \item \textbf{Level 1}: Rounds (N$_{FC}$ = 1,134, N$_{CL}$ = 980)
     \item \textbf{Level 2}: Sessions (each subject has 2: FC and CL)
     \item \textbf{Level 3}: Subjects (N = 66 participants)
 \end{itemize}
@@ -185,10 +185,10 @@ Different analyses use different subsets of the round-level data:
 \toprule
 \textbf{Analysis} & \textbf{N$_{FC}$} & \textbf{N$_{CL}$} & \textbf{Reason} \\
 \midrule
-Affect (all rounds) & 3,402 & 2,940 & Includes Round 1 \\
-Affect (Round $> 1$) & 3,204 & 2,742 & Excludes Round 1 \\
-Moves (all valid) & 3,204 & 2,712 & Round $> 1$, any move type \\
-Moves (main 6 types) & 3,138 & 2,622 & Excludes ``Other'' and rare types \\
+Affect (all rounds) & 1,134 & 980 & Deduplicated round-level data \\
+Affect (Round $> 1$) & 1,068 & 914 & Excludes Round 1 \\
+Moves (all valid) & 1,068 & 904 & Round $> 1$, any move type \\
+Moves (main 6 types) & 1,046 & 874 & Excludes ``Other'' and rare types \\
 \bottomrule
 \end{tabular}
 \caption{N Values Vary by Analysis Scope}
@@ -211,7 +211,7 @@ Moves (main 6 types) & 3,138 & 2,622 & Excludes ``Other'' and rare types \\
 \toprule
 \textbf{Metric} & \textbf{FC} & \textbf{CL} & \textbf{p} & \textbf{d} & \textbf{Status} \\
 \midrule
-\multicolumn{6}{l}{\textit{Round-Level (N$_{FC}$=3,402, N$_{CL}$=2,940)}} \\
+\multicolumn{6}{l}{\textit{Round-Level (N$_{FC}$=1,134, N$_{CL}$=980)}} \\
 \rowcolor{green!15} Arousal & $0.01 \pm 0.09$ & $\mathbf{0.15 \pm 0.22}$ & $<.001$ & \textbf{0.88} & \textcolor{green!50!black}{\textbf{SIG}} \\
 Valence & $0.03 \pm 0.18$ & $0.07 \pm 0.20$ & $<.001$ & 0.18 & Small \\
 \bottomrule
@@ -283,8 +283,8 @@ FC (FaceChannel) & $-0.267$ & 0.07 & 66 & [$-0.99$, 0.98] \\
 \toprule
 \textbf{Condition} & \textbf{$r$} & \textbf{N rounds} & \textbf{Level} \\
 \midrule
-FC (FaceChannel) & $-0.15$ & 3,402 & Round \\
-\rowcolor{green!15} CL (Continual Learning) & $\mathbf{0.45}$ & 2,940 & Round \\
+FC (FaceChannel) & $-0.15$ & 1,134 & Round \\
+\rowcolor{green!15} CL (Continual Learning) & $\mathbf{0.45}$ & 980 & Round \\
 \midrule
 FC (FaceChannel) & $-0.27$ & 66 & Subject \\
 \rowcolor{green!15} CL (Continual Learning) & $\mathbf{0.88}$ & 66 & Subject \\
@@ -365,7 +365,7 @@ Interestingly, Wilcoxon finds significance where the parametric $t$-test did not
 
 \subsection{Round-Level Analysis}
 
-Move types from \texttt{move\_affect\_comparison.csv} (Round $> 1$, N$_{FC}$=3,204, N$_{CL}$=2,712):
+Move types from \texttt{move\_affect\_comparison.csv} (Round $> 1$, N$_{FC}$=1,068, N$_{CL}$=904):
 
 \begin{table}[H]
 \centering
@@ -373,11 +373,11 @@ Move types from \texttt{move\_affect\_comparison.csv} (Round $> 1$, N$_{FC}$=3,2
 \toprule
 \textbf{Move Type} & \textbf{N$_{FC}$} & \textbf{FC\%} & \textbf{N$_{CL}$} & \textbf{CL\%} & \textbf{$\chi^2$} & \textbf{p} \\
 \midrule
-Concession & 1419 & 44.3\% & 1158 & 42.7\% & 1.45 & .229 \\
-Selfish & 1410 & 44.0\% & 1179 & 43.5\% & 0.15 & .699 \\
-Fortunate & 150 & 4.7\% & 147 & 5.4\% & 1.53 & .216 \\
-Nice & 36 & 1.1\% & 24 & 0.9\% & 0.61 & .434 \\
-Unfortunate & 111 & 3.5\% & 90 & 3.3\% & 0.06 & .813 \\
+Concession & 473 & 44.3\% & 386 & 42.7\% & 1.45 & .229 \\
+Selfish & 470 & 44.0\% & 393 & 43.5\% & 0.15 & .699 \\
+Fortunate & 50 & 4.7\% & 49 & 5.4\% & 1.53 & .216 \\
+Nice & 12 & 1.1\% & 8 & 0.9\% & 0.61 & .434 \\
+Unfortunate & 37 & 3.5\% & 30 & 3.3\% & 0.06 & .813 \\
 \bottomrule
 \end{tabular}
 \caption{Round-Level Move Distribution (Chi-Square Tests)}
@@ -432,14 +432,14 @@ This analysis examines whether the CL arousal advantage is consistent across all
 \toprule
 \textbf{Move Type} & \textbf{N$_{FC}$} & \textbf{N$_{CL}$} & \textbf{Total} & \textbf{\%} \\
 \midrule
-Concession & 1,419 & 1,158 & 2,577 & 44.7\% \\
-Selfish & 1,410 & 1,179 & 2,589 & 44.9\% \\
-Fortunate & 150 & 147 & 297 & 5.2\% \\
-Unfortunate & 111 & 90 & 201 & 3.5\% \\
-Nice & 36 & 24 & 60 & 1.0\% \\
-Silent & 12 & 24 & 36 & 0.6\% \\
+Concession & 473 & 386 & 859 & 44.7\% \\
+Selfish & 470 & 393 & 863 & 44.9\% \\
+Fortunate & 50 & 49 & 99 & 5.2\% \\
+Unfortunate & 37 & 30 & 67 & 3.5\% \\
+Nice & 12 & 8 & 20 & 1.0\% \\
+Silent & 4 & 8 & 12 & 0.6\% \\
 \midrule
-\textbf{TOTAL} & \textbf{3,138} & \textbf{2,622} & \textbf{5,760} & 100\% \\
+\textbf{TOTAL} & \textbf{1,046} & \textbf{874} & \textbf{1,920} & 100\% \\
 \bottomrule
 \end{tabular}
 \caption{Round-Level Move Counts by Condition (6 Main Move Types)}
