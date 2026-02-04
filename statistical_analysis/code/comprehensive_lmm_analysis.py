@@ -32,11 +32,12 @@ from datetime import datetime
 import os
 
 # Output directory
-OUTPUT_DIR = 'os.path.dirname(os.path.abspath(__file__))/analysis/output'
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', 'output')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Data path - Use same data as paper
-DATA_PATH = 'os.path.dirname(os.path.dirname(os.path.abspath(__file__)))/final_evaluation_results.csv'
+# Data path - Use merged data file
+DATA_PATH = os.path.join(SCRIPT_DIR, '..', 'data', 'affective_behavioral_merged.csv')
 
 
 def load_and_prepare_data():
@@ -53,9 +54,9 @@ def load_and_prepare_data():
     # Create numeric condition variable (CL=1, FC=0)
     df['Condition_Num'] = (df['Condition'] == 'CL').astype(int)
     
-    # Use Norm_Arousal and Norm_Valence for analysis
-    df['Arousal'] = df['Norm_Arousal']
-    df['Valence'] = df['Norm_Valence']
+    # Use Raw_Arousal and Raw_Valence for analysis (not norm, which averages to 0 by design)
+    df['Arousal'] = df['Raw_Arousal']
+    df['Valence'] = df['Raw_Valence']
     
     # Remove duplicates if any (keep first occurrence)
     df = df.drop_duplicates(subset=['Subject', 'Condition', 'Session', 'Round'])
