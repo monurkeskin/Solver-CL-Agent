@@ -2,53 +2,55 @@
 """
 Raw Data Verification Script
 Computes all paper statistics directly from session logs to verify accuracy.
+Uses the repository's raw_logs/ directory and experiment_subject_data.csv for conditions.
 """
 
 import pandas as pd
 import numpy as np
 from scipy import stats
 import os
-import glob
-from collections import defaultdict
 
-# Paths
-SESSION_LOGS_BASE = '# PATH REMOVED FOR ANONYMITY/Session_Logs'
-OUTPUT_DIR = 'os.path.dirname(os.path.abspath(__file__))/analysis/output'
+# Paths - relative to script location
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.join(SCRIPT_DIR, '..', '..')
+RAW_LOGS_BASE = os.path.join(REPO_ROOT, 'raw_logs')
+SUBJECT_DATA_PATH = os.path.join(SCRIPT_DIR, '..', 'data', 'experiment_subject_data.csv')
+OUTPUT_DIR = os.path.join(SCRIPT_DIR, 'analysis')
 
-def get_session_condition(subject_name, session_num):
-    """
-    Determine condition based on session.
-    Session 1 can be either FC or CL depending on counterbalancing.
-    We need to check the Valid Experiments Excels naming to determine this.
-    """
-    # Check if CL file exists for this session
-    cl_base = '# PATH REMOVED FOR ANONYMITY/Valid Experiments Excels'
-    cl_file = os.path.join(cl_base, f'cl_{subject_name}_Session_{session_num}.csv')
-    fc_file = os.path.join(cl_base, f'face_channel_{subject_name}_Session_{session_num}.csv')
-    
-    # Check file sizes - the actual session has data (>100 bytes)
-    if os.path.exists(cl_file) and os.path.getsize(cl_file) > 100:
-        return 'CL'
-    elif os.path.exists(fc_file) and os.path.getsize(fc_file) > 100:
-        return 'FC'
-    return None
+def load_condition_map():
+    """Load subject-session-condition mapping from experiment_subject_data.csv"""
+    df = pd.read_csv(SUBJECT_DATA_PATH)
+    condition_map = {}
+    for _, row in df.iterrows():
+        # Convert integer Subject_ID (1) to SXXX format (S001) for file matching
+        subject_id = f"S{int(row['Subject_ID']):03d}"
+        key = (subject_id, row['Session_ID'])
+        condition_map[key] = row['Condition']
+    return condition_map
 
 def load_all_sessions():
-    """Load all session logs and determine condition."""
+    """Load all session logs from raw_logs directory."""
+    condition_map = load_condition_map()
     all_data = []
+    loaded_count = 0
     
     for session_num in [1, 2]:
-        session_dir = os.path.join(SESSION_LOGS_BASE, f'Session Logs Session {session_num}')
+        session_dir = os.path.join(RAW_LOGS_BASE, f'Session_{session_num}')
         if not os.path.exists(session_dir):
+            print(f"  Warning: {session_dir} not found")
             continue
-            
+        
         for file in os.listdir(session_dir):
-            if file.endswith('.xlsx'):
-                # Extract subject name
-                subject = file.replace(f'_Session_{session_num}_negotiation_logs.xlsx', '')
+            if file.endswith('.xlsx') and file.startswith('negotiation_logs_'):
+                # Extract subject name: negotiation_logs_S001_Session_1.xlsx -> S001
+                parts = file.replace('.xlsx', '').split('_')
+                if len(parts) >= 3:
+                    subject = parts[2]  # S001
+                else:
+                    continue
                 
-                # Determine condition
-                condition = get_session_condition(subject, session_num)
+                # Lookup condition from subject data
+                condition = condition_map.get((subject, session_num), None)
                 if condition is None:
                     continue
                 
@@ -60,8 +62,11 @@ def load_all_sessions():
                     df['Session'] = session_num
                     df['Condition'] = condition
                     all_data.append(df)
+                    loaded_count += 1
                 except Exception as e:
-                    print(f"Error loading {file}: {e}")
+                    print(f"  Error loading {file}: {e}")
+    
+    print(f"  Loaded {loaded_count} session files")
     
     if not all_data:
         return None
@@ -93,13 +98,17 @@ def analyze_negotiation_outcomes(df):
         print(f"  {cond}: {vals.mean():.3f} ± {vals.std():.3f} (N={len(vals)})")
     
     # Paired t-test
-    fc = subj_means[subj_means['Condition'] == 'FC']['Agent Utility'].values
-    cl = subj_means[subj_means['Condition'] == 'CL']['Agent Utility'].values
+    fc_subj = subj_means[subj_means['Condition'] == 'FC'].set_index('Subject')
+    cl_subj = subj_means[subj_means['Condition'] == 'CL'].set_index('Subject')
+    common = fc_subj.index.intersection(cl_subj.index)
     
-    if len(fc) > 0 and len(cl) > 0:
+    fc = fc_subj.loc[common, 'Agent Utility'].values
+    cl = cl_subj.loc[common, 'Agent Utility'].values
+    
+    if len(common) > 0:
         t, p = stats.ttest_rel(cl, fc)
         d = (cl.mean() - fc.mean()) / np.std(cl - fc) if np.std(cl - fc) > 0 else 0
-        print(f"  Paired t-test: t = {t:.3f}, p = {p:.4f}, d = {d:.3f}")
+        print(f"  Paired t-test (N={len(common)}): t = {t:.3f}, p = {p:.4f}, d = {d:.3f}")
     
     return final_outcomes
 
@@ -109,9 +118,15 @@ def analyze_move_types(df):
     print("BEHAVIORAL MOVES (from raw logs)")
     print("="*60)
     
+    # Check column names
+    move_col = 'Move' if 'Move' in df.columns else 'Agent_Move' if 'Agent_Move' in df.columns else None
+    if move_col is None:
+        print("  Warning: Move column not found in raw logs")
+        return {}
+    
     # Filter human moves only (agent rows don't have moves from human)
-    df_human = df[df['Bidder'] == 'Human'].copy()
-    df_human['Move'] = df_human['Move'].str.lower().str.strip()
+    df_human = df[df['Bidder'] == 'Human'].copy() if 'Bidder' in df.columns else df.copy()
+    df_human['Move'] = df_human[move_col].astype(str).str.lower().str.strip()
     
     # Get move proportions per subject-condition
     move_counts = df_human.groupby(['Subject', 'Condition', 'Move']).size().reset_index(name='Count')
@@ -120,7 +135,7 @@ def analyze_move_types(df):
     move_props = move_counts.merge(totals, on=['Subject', 'Condition'])
     move_props['Proportion'] = move_props['Count'] / move_props['Total']
     
-    print("\n--- Move Proportions (Paper Table 2) ---")
+    print("\n--- Move Proportions ---")
     
     moves = ['concession', 'fortunate', 'selfish', 'nice', 'unfortunate']
     results = {}
@@ -133,7 +148,7 @@ def analyze_move_types(df):
             fc = pivot['FC'].values
             cl = pivot['CL'].values
             
-            t, p = stats.ttest_rel(cl, fc)
+            t, p = stats.ttest_rel(cl, fc) if len(cl) == len(fc) and len(cl) > 0 else (0, 1)
             d = (cl.mean() - fc.mean()) / np.std(cl - fc) if np.std(cl - fc) > 0 else 0
             
             print(f"\n  {move.title()}:")
@@ -151,8 +166,14 @@ def analyze_rounds_to_agreement(df):
     print("ROUNDS TO AGREEMENT")
     print("="*60)
     
-    # Count rounds per session
-    rounds = df.groupby(['Subject', 'Condition', 'Session']).size().reset_index(name='Rounds')
+    # Count unique rounds per session (each round has 2 rows: Human + Agent)
+    if 'Round' in df.columns:
+        rounds = df.groupby(['Subject', 'Condition', 'Session'])['Round'].max().reset_index()
+        rounds.columns = ['Subject', 'Condition', 'Session', 'Rounds']
+    else:
+        # Count rows / 2 (since each round has Human and Agent bid)
+        rounds = df.groupby(['Subject', 'Condition', 'Session']).size().reset_index(name='RowCount')
+        rounds['Rounds'] = rounds['RowCount'] // 2
     
     # Subject means
     subj_rounds = rounds.groupby(['Subject', 'Condition'])['Rounds'].mean().reset_index()
@@ -162,18 +183,22 @@ def analyze_rounds_to_agreement(df):
         vals = subj_rounds[subj_rounds['Condition'] == cond]['Rounds'].values
         print(f"  {cond}: {vals.mean():.1f} ± {vals.std():.1f}")
     
-    fc = subj_rounds[subj_rounds['Condition'] == 'FC']['Rounds'].values
-    cl = subj_rounds[subj_rounds['Condition'] == 'CL']['Rounds'].values
+    fc_subj = subj_rounds[subj_rounds['Condition'] == 'FC'].set_index('Subject')
+    cl_subj = subj_rounds[subj_rounds['Condition'] == 'CL'].set_index('Subject')
+    common = fc_subj.index.intersection(cl_subj.index)
     
-    if len(fc) > 0 and len(cl) > 0:
+    fc = fc_subj.loc[common, 'Rounds'].values
+    cl = cl_subj.loc[common, 'Rounds'].values
+    
+    if len(common) > 0:
         t, p = stats.ttest_rel(cl, fc)
         d = (cl.mean() - fc.mean()) / np.std(cl - fc) if np.std(cl - fc) > 0 else 0
-        print(f"  Paired t-test: t = {t:.3f}, p = {p:.4f}, d = {d:.3f}")
+        print(f"  Paired t-test (N={len(common)}): t = {t:.3f}, p = {p:.4f}, d = {d:.3f}")
 
 def main():
     print("="*60)
     print("RAW DATA VERIFICATION")
-    print("Processing all session logs from source")
+    print("Processing session logs from raw_logs/")
     print("="*60)
     
     # Load all session data
@@ -198,7 +223,7 @@ def main():
     analyze_rounds_to_agreement(df)
     
     print("\n" + "="*60)
-    print("VERIFICATION COMPLETE")
+    print("RAW DATA VERIFICATION COMPLETE")
     print("="*60)
 
 if __name__ == "__main__":
