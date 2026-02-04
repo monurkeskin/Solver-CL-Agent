@@ -1,0 +1,19 @@
+
+\begin{table}[ht]
+\centering
+\caption{Emotion Distribution Statistics: FC vs CL Comparison}
+\label{tab:emotion_distribution}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{llccccc}
+\textbf{Analysis} & \textbf{Metric} & \textbf{FC} & \textbf{CL} & \textbf{\textit{t}} & \textbf{\textit{p}} & \textbf{\textit{d}} \\ \hline
+\rule{0pt}{3ex}
+Round-Level (n=1134/980) & Arousal & $0.01 \pm 0.09$ & \textbf{$0.15 \pm 0.22}$ & \textbf{20.20} & \textbf{<0.001} & \textbf{0.86} \\
+Round-Level (n=1134/980) & Valence & $0.03 \pm 0.18$ & \textbf{$0.07 \pm 0.20}$ & \textbf{4.11} & \textbf{<0.001} & \textbf{0.18} \\
+Subject-Level (n=66) & Arousal & $0.02 \pm 0.07$ & \textbf{$0.14 \pm 0.16}$ & \textbf{5.56} & \textbf{<0.001} & \textbf{0.80} \\
+Subject-Level (n=66) & Valence & $0.03 \pm 0.13$ & $0.05 \pm 0.13$ & 1.01 & 0.32 & 0.20 \\
+\hline
+Balanced (n=980/980) & Arousal & $0.01 \pm 0.09$ & \textbf{$0.15 \pm 0.22}$ & \textbf{19.17} & \textbf{<0.001} & \textbf{0.87} \\
+Balanced (n=980/980) & Valence & $0.03 \pm 0.17$ & \textbf{$0.07 \pm 0.20}$ & \textbf{4.07} & \textbf{<0.001} & \textbf{0.18} \\
+\end{tabular}%
+}
+\end{table}

@@ -1,0 +1,16 @@
+
+\begin{table}[ht]
+\centering
+\caption{Comprehensive Emotion Statistics with Robustness Checks}
+\label{tab:emotion_advanced}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccccccccc}
+\textbf{Metric} & \textbf{CL Mean (SE)} & \textbf{FC Mean (SE)} & \textbf{\textit{t}} & \textbf{\textit{p}} & \textbf{\textit{d} [95\% CI]} & \textbf{U} & \textbf{\textit{p} (MW)} & \textbf{Levene F} & \textbf{\textit{p}} \\ \hline
+\rule{0pt}{3ex}
+Arousal & 0.155 (0.007) & 0.013 (0.003) & \textbf{20.20} & \textbf{<0.001} & 0.86 [0.76, 0.96] & 837554 & <0.001 & 518.97 & 0.000 \\
+Valence & 0.066 (0.006) & 0.033 (0.005) & \textbf{4.11} & \textbf{<0.001} & 0.18 [0.09, 0.27] & 639354 & <0.001 & 5.20 & 0.023 \\
+\end{tabular}%
+}
+\vspace{2mm}
+\small{MW = Mann-Whitney U test; Levene tests variance equality.}
+\end{table}

@@ -1,0 +1,18 @@
+
+\begin{table}[ht]
+\centering
+\caption{Arousal-Valence Correlation Statistics by Condition}
+\label{tab:emotion_correlation}
+\begin{tabular}{lccc}
+\textbf{Analysis Level} & \textbf{Condition} & \textbf{\textit{r}} & \textbf{\textit{n}} \\ \hline
+\rule{0pt}{3ex}
+Round-Level (Fig. 13) & FC & -0.15 & 1134 \\
+ & CL & \textbf{0.45} & 980 \\
+\hline
+Subject-Level (Fig. 14) & FC & -0.20 & 66 \\
+ & CL & \textbf{0.31} & 66 \\
+\hline
+Balanced (Fig. 15) & FC & -0.14 & 980 \\
+ & CL & \textbf{0.45} & 980 \\
+\end{tabular}
+\end{table}
