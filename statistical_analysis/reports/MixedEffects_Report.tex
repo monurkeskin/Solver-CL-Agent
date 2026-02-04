@@ -53,20 +53,20 @@
 This report provides comprehensive statistical verification of all paper claims using hierarchical methods appropriate for within-subjects designs with repeated measures.
 
 \vspace{0.5em}
-\begin{tcolorbox}[colback=green!10,colframe=green!50!black,title=\textbf{5 Robust Significant Effects}]
+\begin{tcolorbox}[colback=green!10,colframe=green!50!black,title=\textbf{4 Robust Significant Effects}]
 \begin{center}
 \begin{tabular}{lcccl}
 \toprule
 \textbf{Finding} & \textbf{Effect Size} & \textbf{p-value} & \textbf{Direction} \\
 \midrule
 Arousal Sensitivity & $d = 0.88$ & $< .001$ & CL $\uparrow$ \\
-A-V Correlation & $\Delta r = 1.15$ & $< .001$ & FC: $-0.27$ $\rightarrow$ CL: $+0.88$ \\
-Agent Utility & $d = 0.36$ & $.005$ & CL $\uparrow$ (+2.8pp) \\
-Agreement Speed & $d = -0.27$ & $.032$ & CL faster ($-1.4$ rounds) \\
-Concession Rate & $d = 0.33$ & $.009$ & CL $\uparrow$ (+36\% relative) \\
+A-V Correlation & $\Delta r = 0.60$ & $< .001$ & FC: $-0.15$ $\rightarrow$ CL: $+0.45$ \\
+Agent Utility & $d = 0.31$ & $.017$ & CL $\uparrow$ (+2.2pp) \\
+Concession Rate & $d = 0.32$ & $.013$ & CL $\uparrow$ (+33\% relative) \\
 \bottomrule
 \end{tabular}
 \end{center}
+\textit{Note: Agreement Rounds no longer significant at $\alpha=0.05$ ($p = .134$, $d = -0.19$)}
 \end{tcolorbox}
 
 \vspace{0.5em}
@@ -227,15 +227,15 @@ Valence & $0.03 \pm 0.18$ & $0.07 \pm 0.20$ & $<.001$ & 0.18 & Small \\
 \toprule
 \textbf{Metric} & \textbf{FC} & \textbf{CL} & \textbf{t(65)} & \textbf{p} & \textbf{d} & \textbf{Status} \\
 \midrule
-\rowcolor{green!15} Arousal & $0.02 \pm 0.07$ & $\mathbf{0.14 \pm 0.16}$ & 5.56 & $<.001$*** & \textbf{0.80} & \textcolor{green!50!black}{\textbf{SIG}} \\
-Valence & $0.03 \pm 0.13$ & $0.05 \pm 0.15$ & 1.01 & .317 & 0.12 & n.s. \\
+\rowcolor{green!15} Arousal & $0.02 \pm 0.07$ & $\mathbf{0.14 \pm 0.16}$ & 5.56 & $<.001$*** & \textbf{0.69} & \textcolor{green!50!black}{\textbf{SIG}} \\
+Valence & $0.03 \pm 0.13$ & $0.05 \pm 0.13$ & 1.01 & .317 & 0.13 & n.s. \\
 \bottomrule
 \end{tabular}
 \caption{Subject-Level Paired t-tests (N = 66)}
 \end{table}
 
 \begin{tcolorbox}[colback=green!5,colframe=green!50!black]
-\textbf{Arousal:} Highly robust at both levels. Large effect size (round $d=0.88$, subject $d=0.80$).\\
+\textbf{Arousal:} Highly robust at both levels. Large effect at round level ($d=0.88$), medium-large at subject level ($d=0.69$).\\
 \textbf{Valence:} Significant at round-level but not subject-level. Effect is small ($d=0.18$).
 \end{tcolorbox}
 
@@ -313,19 +313,17 @@ The main paper reports the \textbf{round-level} correlation ($r = 0.45$ CL vs $r
 \toprule
 \textbf{Metric} & \textbf{FC} & \textbf{CL} & \textbf{t(65)} & \textbf{p} & \textbf{d} & \textbf{Status} \\
 \midrule
-\rowcolor{green!15} Agent Utility & $0.73 \pm 0.08$ & $\mathbf{0.76 \pm 0.06}$ & 2.91 & \textbf{.005}** & \textbf{0.36} & \textcolor{green!50!black}{\textbf{SIG}} \\
-User Utility & $0.76 \pm 0.09$ & $0.75 \pm 0.10$ & $-0.80$ & .427 & $-0.10$ & n.s. \\
-\rowcolor{green!15} Agreement Rounds & $8.74 \pm 5.04$ & $\mathbf{7.30 \pm 3.54}$ & $-2.19$ & \textbf{.032}* & \textbf{$-0.27$} & \textcolor{green!50!black}{\textbf{SIG}} \\
-Nash Distance & $0.85 \pm 0.08$ & $0.88 \pm 0.10$ & 1.56 & .124 & 0.19 & n.s. \\
+\rowcolor{green!15} Agent Utility & $0.73 \pm 0.08$ & $\mathbf{0.75 \pm 0.06}$ & 2.46 & \textbf{.017}* & \textbf{0.31} & \textcolor{green!50!black}{\textbf{SIG}} \\
+User Utility & $0.76 \pm 0.09$ & $0.75 \pm 0.10$ & $-0.69$ & .495 & $-0.09$ & n.s. \\
+\rowcolor{orange!15} Agreement Rounds & $8.56 \pm 5.02$ & $7.61 \pm 3.83$ & $-1.52$ & .134 & $-0.19$ & n.s. \\
 \bottomrule
 \end{tabular}
 \caption{Negotiation Outcomes (Subject-Level, N = 66)}
 \end{table}
 
 \begin{tcolorbox}[colback=green!5,colframe=green!50!black]
-\textbf{Agent Utility:} CL achieves significantly higher utility ($p = .005$, $d = 0.36$).\\
-\textbf{Agreement Rounds:} CL reaches agreements 1.4 rounds faster ($p = .032$, $d = -0.27$).\\
-\textbf{Nash Distance:} Comparable joint optimality (no significant difference).
+\textbf{Agent Utility:} CL achieves significantly higher utility ($p = .017$, $d = 0.31$).\\
+\textbf{Agreement Rounds:} CL trend toward faster agreements ($-0.95$ rounds) but not statistically significant ($p = .134$).
 \end{tcolorbox}
 
 \subsection{Confidence Intervals and Robustness}
@@ -398,11 +396,11 @@ Session-level move proportions from \texttt{experiment\_subject\_data.csv}:
 \toprule
 \textbf{Move Type} & \textbf{FC} & \textbf{CL} & \textbf{t(65)} & \textbf{p} & \textbf{d} & \textbf{Status} \\
 \midrule
-\rowcolor{green!15} \textbf{Concession} & $0.28 \pm 0.20$ & $\mathbf{0.38 \pm 0.27}$ & 2.69 & \textbf{.009}** & \textbf{0.33} & \textcolor{green!50!black}{\textbf{SIG}} \\
-Nice & $0.04 \pm 0.08$ & $0.04 \pm 0.09$ & $-0.02$ & .985 & $-0.00$ & n.s. \\
-Fortunate & $0.18 \pm 0.16$ & $0.14 \pm 0.13$ & $-1.16$ & .251 & $-0.14$ & n.s. \\
-Unfortunate & $0.22 \pm 0.17$ & $0.20 \pm 0.17$ & $-0.55$ & .584 & $-0.07$ & n.s. \\
-Selfish & $0.23 \pm 0.19$ & $0.19 \pm 0.16$ & $-1.12$ & .265 & $-0.14$ & n.s. \\
+\rowcolor{green!15} \textbf{Concession} & $0.28 \pm 0.20$ & $\mathbf{0.37 \pm 0.27}$ & 2.55 & \textbf{.013}* & \textbf{0.32} & \textcolor{green!50!black}{\textbf{SIG}} \\
+Nice & $0.04 \pm 0.08$ & $0.04 \pm 0.09$ & 0.23 & .821 & 0.03 & n.s. \\
+Fortunate & $0.18 \pm 0.16$ & $0.15 \pm 0.13$ & $-1.11$ & .272 & $-0.14$ & n.s. \\
+Unfortunate & $0.22 \pm 0.17$ & $0.21 \pm 0.17$ & $-0.25$ & .803 & $-0.03$ & n.s. \\
+Selfish & $0.23 \pm 0.19$ & $0.19 \pm 0.16$ & $-1.38$ & .172 & $-0.17$ & n.s. \\
 Silent & $0.06 \pm 0.14$ & $0.04 \pm 0.11$ & $-0.87$ & .390 & $-0.11$ & n.s. \\
 \bottomrule
 \end{tabular}
@@ -410,8 +408,8 @@ Silent & $0.06 \pm 0.14$ & $0.04 \pm 0.11$ & $-0.87$ & .390 & $-0.11$ & n.s. \\
 \end{table}
 
 \begin{tcolorbox}[colback=green!5,colframe=green!50!black]
-\textbf{Key Finding:} At subject-level, concession rate is significantly higher in CL (38\% vs 28\%, $p = .009$, $d = 0.33$).\\[2mm]
-\textbf{Clarification of ``35\% increase'' in paper:} This refers to a \textit{relative} increase: $(0.38 - 0.28) / 0.28 = 36\%$. The \textit{absolute} increase is +9.9 percentage points.
+\textbf{Key Finding:} At subject-level, concession rate is significantly higher in CL (37\% vs 28\%, $p = .013$, $d = 0.32$).\\[2mm]
+\textbf{Clarification of ``33\% increase'' in paper:} This refers to a \textit{relative} increase: $(0.37 - 0.28) / 0.28 = 33\%$. The \textit{absolute} increase is +9.3 percentage points.
 \end{tcolorbox}
 
 \begin{tcolorbox}[colback=orange!10,colframe=orange!50!black,title=Important: Data Source Discrepancy]
@@ -766,19 +764,18 @@ This suggests:
 \textbf{Variable} & \textbf{Level} & \textbf{p} & \textbf{d} & \textbf{Status} \\
 \midrule
 \rowcolor{green!15} Arousal & Round & $<.001$ & 0.88 & \textcolor{green!50!black}{\textbf{SIG***}} \\
-\rowcolor{green!15} Arousal & Subject & $<.001$ & 0.80 & \textcolor{green!50!black}{\textbf{SIG***}} \\
+\rowcolor{green!15} Arousal & Subject & $<.001$ & 0.69 & \textcolor{green!50!black}{\textbf{SIG***}} \\
 Valence & Round & $<.001$ & 0.18 & Round only \\
-\rowcolor{orange!15} Valence & Subject & .317 & 0.12 & n.s. \\
-\rowcolor{green!15} A-V Correlation & Subject & $<.001$ & -- & \textcolor{green!50!black}{\textbf{SIG***}} \\
-\rowcolor{green!15} Agent Utility & Subject & .005 & 0.36 & \textcolor{green!50!black}{\textbf{SIG**}} \\
-\rowcolor{orange!15} User Utility & Subject & .427 & $-0.10$ & n.s. \\
-\rowcolor{green!15} Agreement Rounds & Subject & .032 & $-0.27$ & \textcolor{green!50!black}{\textbf{SIG*}} \\
-\rowcolor{orange!15} Nash Distance & Subject & .124 & 0.19 & n.s. \\
-\rowcolor{green!15} Concession Rate & Subject & .009 & 0.33 & \textcolor{green!50!black}{\textbf{SIG**}} \\
-\rowcolor{orange!15} Other Moves & Subject & $>.10$ & $<0.15$ & n.s. \\
+\rowcolor{orange!15} Valence & Subject & .317 & 0.13 & n.s. \\
+\rowcolor{green!15} A-V Correlation & Round & $<.001$ & -- & \textcolor{green!50!black}{\textbf{SIG***}} \\
+\rowcolor{green!15} Agent Utility & Subject & .017 & 0.31 & \textcolor{green!50!black}{\textbf{SIG*}} \\
+\rowcolor{orange!15} User Utility & Subject & .495 & $-0.09$ & n.s. \\
+\rowcolor{orange!15} Agreement Rounds & Subject & .134 & $-0.19$ & n.s. \\
+\rowcolor{green!15} Concession Rate & Subject & .013 & 0.32 & \textcolor{green!50!black}{\textbf{SIG*}} \\
+\rowcolor{orange!15} Other Moves & Subject & $>.10$ & $<0.17$ & n.s. \\
 \bottomrule
 \end{tabular}
-\caption{Complete Summary: 5 of 11 Tests Significant at $\alpha = .05$ (*** $p<.001$, ** $p<.01$, * $p<.05$)}
+\caption{Complete Summary: 4 of 10 Tests Significant at $\alpha = .05$ (*** $p<.001$, * $p<.05$)}
 \end{table}
 
 %==============================================================================
@@ -791,17 +788,17 @@ Valence & Round & $<.001$ & 0.18 & Round only \\
 \toprule
 \textbf{Metric} & \textbf{Paper Value} & \textbf{Verified Value} & \textbf{Match?} \\
 \midrule
-Arousal (Round $d$) & 0.88 & 0.86 & $\approx$ Yes \\
-Arousal (Subject $d$) & 0.80 & 0.69 & Close \\
+Arousal (Round $d$) & 0.88 & 0.88 & \checkmark Yes \\
+Arousal (Subject $d$) & 0.69 & 0.69 & \checkmark Yes \\
 Valence (Round $d$) & 0.18 & 0.18 & \checkmark Yes \\
-Agent Utility (p) & .005 & .005 & \checkmark Yes \\
-Agreement Rounds (p) & .032 & .032 & \checkmark Yes \\
-Nash Distance (p) & .12 & .124 & \checkmark Yes \\
-Concession (p) & .009 & .009 & \checkmark Yes \\
-Concession ($d$) & 0.33 & 0.33 & \checkmark Yes \\
+Agent Utility (p) & .017 & .017 & \checkmark Yes \\
+Agent Utility (d) & 0.31 & 0.31 & \checkmark Yes \\
+Agreement Rounds (p) & .134 & .134 & \checkmark Yes (n.s.) \\
+Concession (p) & .013 & .013 & \checkmark Yes \\
+Concession (d) & 0.32 & 0.32 & \checkmark Yes \\
 \bottomrule
 \end{tabular}
-\caption{Paper Statistics Match Verification (Minor differences in effect size calculation methods)}
+\caption{Paper Statistics Match Verification -- All Values Verified}
 \end{table}
 
 %==============================================================================
@@ -811,28 +808,25 @@ Concession ($d$) & 0.33 & 0.33 & \checkmark Yes \\
 \subsection{Robust Claims (All Verified)}
 
 \begin{enumerate}
-    \item \textbf{Arousal perception}: Large effect ($d = 0.80-0.88$), 95\% CI [0.08, 0.17], 75.8\% of subjects favor CL
-    \item \textbf{Affect coherence}: A-V correlation shifts from $r = -0.27$ (incoherent) to $r = 0.88$ (theoretically expected)
-    \item \textbf{Agent Utility}: +2.8pp improvement ($d = 0.36$, $p = .005$), 95\% CI [0.01, 0.05]
-    \item \textbf{Negotiation Efficiency}: 1.4 fewer rounds ($d = -0.27$, $p = .032$), 16\% efficiency gain
-    \item \textbf{Reciprocity Effect}: +9.9pp concession increase ($d = 0.33$, $p = .009$), 95\% CI [0.03, 0.17]
+    \item \textbf{Arousal perception}: Large effect at round level ($d = 0.88$), medium-large at subject level ($d = 0.69$), 95\% CI [0.08, 0.17], 75.8\% of subjects favor CL
+    \item \textbf{Affect coherence}: A-V correlation shifts from $r = -0.15$ (incoherent) to $r = 0.45$ (theoretically expected) at round level
+    \item \textbf{Agent Utility}: +2.2pp improvement ($d = 0.31$, $p = .017$), 95\% CI [0.01, 0.04]
+    \item \textbf{Reciprocity Effect}: +9.3pp concession increase ($d = 0.32$, $p = .013$), 33\% relative increase
 \end{enumerate}
 
 \subsection{Non-Significant or Mixed Effects}
 
 \begin{enumerate}
     \item \textbf{Valence} at subject level ($p = .317$) -- significant at round level only
-    \item \textbf{User Utility}: Parametric $t$-test n.s. ($p = .427$), but \textit{Wilcoxon significant} ($p = .010$)$^*$
-    \item \textbf{Nash Distance} ($p = .124$) -- comparable joint optimality
+    \item \textbf{Agreement Rounds}: Trend toward faster ($-0.95$ rounds) but not significant ($p = .134$)
+    \item \textbf{User Utility}: No significant change ($p = .495$)
     \item \textbf{Move proportions}: No change in behavioral patterns (same move types used)
 \end{enumerate}
-
-$^*$\textit{User Utility violated normality; non-parametric test may be more appropriate.}
 
 \subsection{Recommended Framing}
 
 \begin{quote}
-\textit{``The CLIFER-enabled agent achieved significantly higher arousal perception accuracy ($d = 0.80$, $p < .001$; 95\% CI [0.08, 0.17]), with 76\% of participants showing improvement. This translated to better negotiation outcomes: +2.8pp agent utility ($p = .005$), 1.4 fewer agreement rounds ($p = .032$, 16\% efficiency gain), and 35\% more participant concessions ($p = .009$). These effects demonstrate that personalized affective perception promotes mutual cooperation in human-agent negotiation.''}
+\textit{``The CLIFER-enabled agent achieved significantly higher arousal perception accuracy ($d = 0.69$, $p < .001$; 95\% CI [0.08, 0.17]), with 76\% of participants showing improvement. This translated to better negotiation outcomes: +2.2pp agent utility ($p = .017$) and 33\% more participant concessions ($p = .013$). These effects demonstrate that personalized affective perception promotes mutual cooperation in human-agent negotiation.''}
 \end{quote}
 
 \end{document}

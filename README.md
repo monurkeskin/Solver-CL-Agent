@@ -1,8 +1,8 @@
-# Personalized Affective Perception via Continual Learning Promotes Mutual Cooperation in Human–Agent Negotiation
+# Personalized Affective Perception via Continual Learning Promotes Cooperation in Human-Agent Negotiation
 
-> **Keywords**: Human–Agent Interaction, Automated Negotiation, Affective Computing, Continual Learning, Facial Expression Recognition, Personalization
+> **Keywords**: Human-Agent Interaction, Automated Negotiation, Affective Computing, Continual Learning, Facial Expression Recognition, Personalization
 
-This repository constitutes the **Official Supplementary Material** for the paper *Personalized Affective Perception via Continual Learning Promotes Mutual Cooperation in Human–Agent Negotiation*. It contains the complete source code, the anonymized experimental dataset (N=66), and a one-click reproducibility suite.
+This repository constitutes the **Official Supplementary Material** for the paper *Personalized Affective Perception via Continual Learning Promotes Cooperation in Human-Agent Negotiation*. It contains the complete source code, the anonymized experimental dataset (N=66), and a one-click reproducibility suite.
 
 ---
 
@@ -25,7 +25,7 @@ The figure below illustrates the complete system architecture, showing the integ
 
 ## 2. Abstract
 
-Self-interested intelligent agents that negotiate with humans must interpret non-verbal cues, yet static facial-affect models degrade across individuals and contexts, creating a Generalization Gap. We present a framework, **Continual Learning with Imagination for Facial Expression Recognition (CLIFER)**, that embeds Continual Learning into the negotiation strategy to personalize an agent's valence–arousal perception model during interaction, balancing plasticity and stability. Our system combines CLIFER with a dual-thread, asynchronous architecture that updates the model in the background while maintaining responsive, real-time interaction. It modulates negotiation strategy using differential affective feedback. In a counterbalanced within-subject study (N=66) in which participants negotiated with a NAO robot, the CLIFER-enabled agent achieved higher Agent Utility and reached agreements more quickly than a generic FaceChannel baseline, while maintaining User Utility and comparable joint outcome quality, as measured by Nash distance. Continual adaptation also improved the structural coherence of the affective signal, yielding circumplex-consistent arousal–valence coupling. Importantly, personalization was associated with a significant increase (approximately 35%) in participants’ concession rates, suggesting that real-time, continual affective adaptation can promote mutual cooperation in human–agent negotiation under interactive constraints.
+Self-interested intelligent agents that negotiate with humans must interpret non-verbal cues, yet static facial-affect models degrade across individuals and contexts, creating a Generalization Gap. We present a framework, **Continual Learning with Imagination for Facial Expression Recognition (CLIFER)**, that embeds Continual Learning into the negotiation strategy to personalize an agent's valence-arousal perception model during interaction, balancing plasticity and stability. Our system combines CLIFER with a dual-thread, asynchronous architecture that updates the model in the background while maintaining responsive, real-time interaction. It modulates negotiation strategy using differential affective feedback. In a counterbalanced within-subject study (N=66) in which participants negotiated with a NAO robot, the CLIFER-enabled agent achieved significantly higher individual utility (p=0.017, d=0.31) than a generic FaceChannel baseline while maintaining comparable joint outcomes. Continual adaptation produced a significant improvement in arousal sensitivity (d=0.88; 95% CI [0.081, 0.169]) affecting 76% of participants positively, and restored theoretically coherent arousal-valence coupling (r=0.45 vs. r=-0.15). Importantly, personalization was associated with a significant increase (approximately 33%) in participants' concession rates, suggesting that real-time, continual affective adaptation can promote cooperation in human-agent negotiation under interactive constraints.
 
 ---
 
@@ -170,15 +170,15 @@ Each participant negotiated twice with the NAO robot "Solver" in a counterbalanc
 
 | Metric | FC (Mean±SD) | CL (Mean±SD) | *t* | *p* | *d* |
 |--------|--------------|--------------|-----|-----|-----|
-| **Agent Utility** | 0.73 ± 0.08 | **0.76 ± 0.06** | 2.91 | **0.005** | 0.36 |
-| User Utility | 0.76 ± 0.09 | 0.75 ± 0.10 | -0.80 | 0.43 | -0.10 |
+| **Agent Utility** | 0.73 ± 0.07 | **0.75 ± 0.06** | 2.46 | **0.017** | 0.31 |
+| User Utility | 0.76 ± 0.09 | 0.75 ± 0.10 | -0.69 | 0.49 | -0.09 |
 | Nash Distance | 0.85 ± 0.08 | 0.88 ± 0.10 | 1.56 | 0.12 | 0.19 |
-| **Agreement Rounds** | 8.74 ± 5.08 | **7.30 ± 3.56** | -2.19 | **0.03** | -0.27 |
+| Agreement Rounds | 8.74 ± 5.08 | 7.78 ± 3.56 | -1.54 | 0.13 | -0.19 |
 
 </div>
 
-*   **Agent Utility**: **CL (0.76) > FC (0.73)**, p=0.005, d=0.36. (Significant)
-*   **Efficiency**: **CL (7.3 rounds) < FC (8.7 rounds)**, p=0.03, d=-0.27. (Significant)
+*   **Agent Utility**: **CL (0.75) > FC (0.73)**, p=0.017, d=0.31. (Significant)
+*   **Efficiency**: CL shows 11% faster trend (7.8 vs 8.7 rounds), but did not reach significance (p=0.13).
 *   **Fairness**: User Utility and Nash Distance showed no significant decline, proving the agent did not exploit the human.
 
 ### 7.2. Behavioral Reciprocity (RQ3)
@@ -191,7 +191,7 @@ Each participant negotiated twice with the NAO robot "Solver" in a counterbalanc
 
 | Move Type | FC | CL | *t* | *p* | *d* |
 |-----------|----|----|-----|-----|-----|
-| **Concession** | 0.28 ± 0.20 | **0.38 ± 0.27** | 2.69 | **0.009** | 0.33 |
+| **Concession** | 0.28 ± 0.20 | **0.38 ± 0.27** | 2.55 | **0.013** | 0.32 |
 | Nice | 0.04 ± 0.08 | 0.04 ± 0.09 | -0.22 | 0.83 | -0.03 |
 | Fortunate | 0.18 ± 0.16 | 0.15 ± 0.14 | -0.67 | 0.51 | -0.08 |
 | Unfortunate | 0.22 ± 0.17 | 0.20 ± 0.17 | -1.00 | 0.32 | -0.12 |
@@ -199,7 +199,7 @@ Each participant negotiated twice with the NAO robot "Solver" in a counterbalanc
 
 </div>
 
-*   **Concession Rate**: Participants conceded **35% more frequently** with the CL agent (p=0.009, d=0.33).
+*   **Concession Rate**: Participants conceded **33% more frequently** with the CL agent (p=0.013, d=0.32).
 *   **Mechanism**: Stepwise analysis confirms that coherent affective signaling triggered reciprocal cooperation.
 
 ### 7.3. Subjective Perception (RQ4)
@@ -234,8 +234,8 @@ Participants perceived the CL agent as significantly more emotionally aware and 
 |--------|----|----|-----|-----|
 | **Arousal (Round)** | 0.01 ± 0.09 | **0.15 ± 0.22** | **<0.001** | **0.88** |
 | Valence (Round) | 0.03 ± 0.18 | 0.07 ± 0.20 | <0.001 | 0.18 |
-| **Arousal (Subject)** | 0.02 ± 0.07 | **0.14 ± 0.16** | **<0.001** | **0.80** |
-| Valence (Subject) | 0.03 ± 0.13 | 0.05 ± 0.15 | 0.317 | 0.12 |
+| **Arousal (Subject)** | 0.02 ± 0.06 | **0.14 ± 0.16** | **<0.001** | **0.69** |
+| Valence (Subject) | 0.03 ± 0.13 | 0.05 ± 0.13 | 0.317 | 0.13 |
 
 </div>
 

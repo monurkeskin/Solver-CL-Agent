@@ -11,6 +11,7 @@ Refinements:
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 from matplotlib.lines import Line2D
 from matplotlib.colors import to_rgba
 from scipy import ndimage
@@ -88,6 +89,13 @@ excluded_moves = df_valid[~df_valid['Move_Type'].isin(all_moves)]
 print(f"6 scientific moves: {len(df_main)} (FC: {len(df_main[df_main['Condition'] == 'FC'])} | CL: {len(df_main[df_main['Condition'] == 'CL'])})")
 print(f"  Excluded Pa_Gain/Other: {len(excluded_moves)}")
 print()
+
+# Create legend order based on FC counts (most to least) - use same order for both
+fc_data = df_main[df_main['Condition'] == 'FC']
+fc_counts = {m: len(fc_data[fc_data['Move_Type'] == m]) for m in all_moves}
+LEGEND_ORDER = sorted(all_moves, key=lambda x: fc_counts[x], reverse=True)
+print(f"Legend order (by FC count): {LEGEND_ORDER}")
+
 
 # Global limits
 x_min = df_main['Norm_Valence'].quantile(0.001)
@@ -267,8 +275,8 @@ def create_final_circumplex():
             # Slightly larger and more opaque points for better visibility
             ax.scatter(x, y, c=color, alpha=0.65, s=18, edgecolors='none', zorder=zorder)
         
-        # Legend entries in display order
-        for move_type in all_moves:
+        # Legend entries in order by count (most to least, using FC order for consistency)
+        for move_type in LEGEND_ORDER:
             n = len(cond_data[cond_data['Move_Type'] == move_type])
             if n < 3:
                 continue
@@ -292,13 +300,8 @@ def create_final_circumplex():
             
             ax.scatter(cx, cy, s=280, c=color, edgecolors='black', linewidths=1.5, zorder=zorder)
         
-        # Legend placement: FC = lower left, CL = lower right
-        if condition == 'FC':
-            legend_loc = 'lower left'
-        else:
-            legend_loc = 'lower right'
-        
-        ax.legend(handles=legend_handles, loc=legend_loc, fontsize=11,
+        # Legend placement
+        ax.legend(handles=legend_handles, loc='lower right', fontsize=11,
                   framealpha=0.95, handletextpad=0.4, borderpad=0.5,
                   edgecolor='#CCCCCC', fancybox=False)
         
@@ -321,17 +324,118 @@ def create_final_circumplex():
     print(f"Saved: {OUTPUT_DIR}/MoveAffect_Circumplex_Final.png")
     print(f"Saved: {OUTPUT_DIR}/MoveAffect_Circumplex_Final.pdf")
 
+
+def create_single_circumplex(condition, output_suffix):
+    """Create a single circumplex panel for one condition."""
+    
+    fig, ax = plt.subplots(figsize=(8, 7))
+    
+    title = f'{condition} Rounds'
+    cond_data = df[df['Condition'] == condition].copy()
+    
+    # Fixed order for consistent visual layering
+    fixed_order = ['Unfortunate', 'Silent', 'Fortunate', 'Nice', 'Selfish', 'Concession']
+    
+    # Draw blobs - use fixed order for visual consistency
+    for i, move_type in enumerate(fixed_order):
+        move_data = cond_data[cond_data['Move_Type'] == move_type]
+        n = len(move_data)
+        if n < 10:
+            continue
+        
+        x = move_data['Norm_Valence'].values
+        y = move_data['Norm_Arousal'].values
+        color = MOVE_COLORS[move_type]
+        zorder = 2 + i * 2
+        
+        # Dynamic per-region threshold based on cluster size
+        if n < 50:
+            min_pts = 10
+        elif n < 200:
+            min_pts = 20
+        else:
+            min_pts = 30
+        
+        create_amorphous_blob(ax, x, y, color, alpha=MOVE_ALPHA.get(move_type, 0.20), 
+                              zorder=zorder, min_region_points=min_pts)
+    
+    # Draw scatter points - use fixed order for consistency
+    for i, move_type in enumerate(fixed_order):
+        move_data = cond_data[cond_data['Move_Type'] == move_type]
+        n = len(move_data)
+        if n < 3:
+            continue
+        
+        x = move_data['Norm_Valence'].values
+        y = move_data['Norm_Arousal'].values
+        color = MOVE_COLORS[move_type]
+        zorder = MOVE_ZORDER.get(move_type, 50) + 10
+        
+        ax.scatter(x, y, s=18, c=color, marker='o', alpha=0.55, 
+                   edgecolors='none', zorder=zorder, label=f'{move_type} (n={n})')
+    
+    # Create legend (using FC-based order for consistency between FC and CL)
+    legend_handles = []
+    for move_type in LEGEND_ORDER:
+        move_data = cond_data[cond_data['Move_Type'] == move_type]
+        n = len(move_data)
+        if n >= 3:
+            color = MOVE_COLORS[move_type]
+            legend_handles.append(mpatches.Patch(facecolor=color, edgecolor='#333333', 
+                                                  linewidth=1, label=f'{move_type} (n={n})'))
+    
+    # Calculate and plot centroids
+    for i, move_type in enumerate(fixed_order):
+        move_data = cond_data[cond_data['Move_Type'] == move_type]
+        n = len(move_data)
+        if n < 3:
+            continue
+        
+        cx = move_data['Norm_Valence'].mean()
+        cy = move_data['Norm_Arousal'].mean()
+        color = MOVE_COLORS[move_type]
+        zorder = 200 + i * 2
+        
+        ax.scatter(cx, cy, s=280, c=color, edgecolors='black', linewidths=1.5, zorder=zorder)
+    
+    ax.legend(handles=legend_handles, loc='lower right', fontsize=11,
+              framealpha=0.95, handletextpad=0.4, borderpad=0.5,
+              edgecolor='#CCCCCC', fancybox=False)
+    
+    format_axes(ax, title)
+    
+    plt.tight_layout()
+    
+    plt.savefig(f'{OUTPUT_DIR}/MoveAffect_Circumplex_{output_suffix}.png', 
+                dpi=300, bbox_inches='tight', facecolor='white')
+    plt.savefig(f'{OUTPUT_DIR}/MoveAffect_Circumplex_{output_suffix}.pdf', 
+                dpi=300, bbox_inches='tight', facecolor='white')
+    plt.close()
+    
+    print(f"Saved: {OUTPUT_DIR}/MoveAffect_Circumplex_{output_suffix}.png")
+    print(f"Saved: {OUTPUT_DIR}/MoveAffect_Circumplex_{output_suffix}.pdf")
+
+
 # ============================================================================
 # MAIN EXECUTION
 # ============================================================================
 
 if __name__ == "__main__":
     print("=" * 60)
-    print("CREATING FINAL PUBLICATION CIRCUMPLEX v2")
+    print("CREATING FINAL PUBLICATION CIRCUMPLEX FIGURES")
     print("=" * 60)
     
+    # Create combined figure (2 panels)
     create_final_circumplex()
+    
+    # Create separate figures for FC and CL
+    print("\nCreating separate FC figure...")
+    create_single_circumplex('FC', 'FC')
+    
+    print("\nCreating separate CL figure...")
+    create_single_circumplex('CL', 'CL')
     
     print("\n" + "=" * 60)
     print("VISUALIZATION COMPLETE")
     print("=" * 60)
+
