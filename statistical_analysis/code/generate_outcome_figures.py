@@ -203,13 +203,14 @@ def generate_behavioral_analysis(df):
     fc = df[df['Condition'] == 'FC'].set_index('Subject_ID')
     cl = df[df['Condition'] == 'CL'].set_index('Subject_ID')
     
+    # Ordered by significance: most to least significant
     move_cols = [
-        ('Concession_Rate', 'Concession', 1.12),  # Asterisk at 1.12 (higher)
-        ('Nice_Rate', 'Nice', None),
-        ('Fortunate_Rate', 'Fortunate', None),
-        ('Unfortunate_Rate', 'Unfortunate', None),
-        ('Selfish_Rate', 'Selfish', None),
-        ('Silent_Rate', 'Silent', None)
+        ('Concession_Rate', 'Concession', 1.12),  # p=0.013 * (Asterisk at 1.12)
+        ('Selfish_Rate', 'Selfish', None),        # p=0.172
+        ('Fortunate_Rate', 'Fortunate', None),    # p=0.272
+        ('Silent_Rate', 'Silent', None),          # p=0.390
+        ('Unfortunate_Rate', 'Unfortunate', None),# p=0.803
+        ('Nice_Rate', 'Nice', None)               # p=0.821
     ]
     
     fig, axes = plt.subplots(2, 3, figsize=(12, 8))
