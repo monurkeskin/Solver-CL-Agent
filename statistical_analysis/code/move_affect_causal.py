@@ -32,7 +32,9 @@ print("=" * 70)
 print("MOVE-AFFECT CAUSAL ANALYSIS: PHASE 2")
 print("=" * 70)
 
-DATA_PATH = "os.path.dirname(os.path.dirname(os.path.abspath(__file__)))/affective_behavioral_merged.csv"
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(SCRIPT_DIR, '..', 'data', 'affective_behavioral_merged.csv')
 df = pd.read_csv(DATA_PATH)
 
 # Filter valid moves
@@ -249,10 +251,11 @@ for condition in ['FC', 'CL']:
 # 7. SAVE RESULTS
 # ============================================================================
 
-output_path = "os.path.dirname(os.path.abspath(__file__))/analysis"
+output_path = os.path.join(SCRIPT_DIR, 'analysis')
+os.makedirs(output_path, exist_ok=True)
 
 # Save lagged dataset
-df_main.to_csv(f"{output_path}/move_affect_lagged.csv", index=False)
+df_main.to_csv(os.path.join(output_path, 'move_affect_lagged.csv'), index=False)
 print(f"\nSaved: {output_path}/move_affect_lagged.csv")
 
 print("\n" + "=" * 70)

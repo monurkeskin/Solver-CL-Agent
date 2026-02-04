@@ -13,7 +13,9 @@ from scipy.stats import ttest_rel, mannwhitneyu
 FC_COLOR = '#5B9BD5'
 CL_COLOR = '#ED7D31'
 
-DATA_PATH = 'os.path.dirname(os.path.dirname(os.path.abspath(__file__)))/final_evaluation_results.csv'
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(SCRIPT_DIR, '..', 'data', 'final_evaluation_results.csv')
 
 def load_data():
     df = pd.read_csv(DATA_PATH)
@@ -156,7 +158,8 @@ def generate_ultra_compact(df):
     plt.subplots_adjust(bottom=0.18)  # Make room for group labels
     
     # Save
-    output_dir = 'os.path.dirname(os.path.abspath(__file__))/assets'
+    output_dir = os.path.join(SCRIPT_DIR, 'assets')
+    os.makedirs(output_dir, exist_ok=True)
     fig.savefig(f'{output_dir}/MoveAffect_Combined_Raincloud.png', dpi=300, bbox_inches='tight', 
                 facecolor='white', edgecolor='none')
     fig.savefig(f'{output_dir}/MoveAffect_Combined_Raincloud.pdf', bbox_inches='tight', 

@@ -24,7 +24,9 @@ warnings.filterwarnings('ignore')
 # LOAD DATA
 # ============================================================================
 
-DATA_PATH = "os.path.dirname(os.path.dirname(os.path.abspath(__file__)))/affective_behavioral_merged.csv"
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(SCRIPT_DIR, '..', 'data', 'affective_behavioral_merged.csv')
 
 print("=" * 80)
 print("MIXED-EFFECTS ANALYSIS: Addressing Nested-Data Independence")

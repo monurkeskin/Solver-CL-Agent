@@ -29,7 +29,9 @@ print("MOVE-AFFECT COHERENCE ANALYSIS: PHASE 1")
 print("=" * 70)
 
 # Load the merged dataset
-DATA_PATH = "os.path.dirname(os.path.dirname(os.path.abspath(__file__)))/affective_behavioral_merged.csv"
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(SCRIPT_DIR, '..', 'data', 'affective_behavioral_merged.csv')
 df = pd.read_csv(DATA_PATH)
 
 print(f"\nLoaded: {len(df)} rows")
@@ -217,8 +219,7 @@ for move_type in sorted(df_valid['Move_Type'].unique()):
 # 5. SAVE RESULTS
 # ============================================================================
 
-output_path = "os.path.dirname(os.path.abspath(__file__))/analysis"
-import os
+output_path = os.path.join(SCRIPT_DIR, 'analysis')
 os.makedirs(output_path, exist_ok=True)
 
 # Save comparison results

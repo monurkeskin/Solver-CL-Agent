@@ -20,9 +20,10 @@ warnings.filterwarnings('ignore')
 FC_COLOR = '#5B9BD5'
 CL_COLOR = '#ED7D31'
 
-# Data path
-DATA_PATH = "os.path.dirname(os.path.dirname(os.path.abspath(__file__)))/affective_behavioral_merged.csv"
-OUTPUT_DIR = "os.path.dirname(os.path.abspath(__file__))/assets"
+import os
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_PATH = os.path.join(SCRIPT_DIR, '..', 'data', 'affective_behavioral_merged.csv')
+OUTPUT_DIR = os.path.join(SCRIPT_DIR, 'assets')
 
 # Load and prepare data
 print("Loading data...")
