@@ -2,7 +2,7 @@
 """
 Generate NegotiationOutcomes and BehavioralAnalysis figures from experiment_subject_data.csv
 Uses violin plots with paired subject lines (matching paper style).
-Fixed: Y-axis ranges at 0-1.0 for ratios, asterisks closer to bracket.
+Fixed: Y-axis ranges, hidden ticks, asterisk positioning.
 """
 
 import pandas as pd
@@ -38,12 +38,14 @@ def load_data():
     return df
 
 def draw_paired_violin(ax, fc_vals, cl_vals, fc_subj_ids, cl_subj_ids, ylabel, title, 
-                       show_ylabel=True, fixed_ylim=None):
+                       show_ylabel=True, fixed_ylim=None, hide_top_tick=False, asterisk_y=None):
     """
     Draw a paired violin plot with boxplot overlay, scatter points, and paired subject lines.
     
     Parameters:
-    - fixed_ylim: tuple (ymin, ymax) to fix y-axis range, e.g., (0, 1.0) for ratios
+    - fixed_ylim: tuple (ymin, ymax) to fix y-axis range
+    - hide_top_tick: if True, hide the top tick label (e.g., hide 1.2)
+    - asterisk_y: fixed y position for asterisk (if None, auto-calculate)
     """
     pos_fc, pos_cl = 0, 1
     
@@ -103,7 +105,6 @@ def draw_paired_violin(ax, fc_vals, cl_vals, fc_subj_ids, cl_subj_ids, ylabel, t
         ax.plot([pos_fc + 0.08, pos_cl - 0.08], [fc_v, cl_v], color='gray', alpha=0.3, lw=0.5, zorder=1)
     
     # Paired t-test and significance bracket
-    has_sig = False
     if len(common_subjects) >= 5:
         fc_paired = [fc_dict[s] for s in common_subjects]
         cl_paired = [cl_dict[s] for s in common_subjects]
@@ -111,11 +112,13 @@ def draw_paired_violin(ax, fc_vals, cl_vals, fc_subj_ids, cl_subj_ids, ylabel, t
         sig = '***' if p_val < 0.001 else '**' if p_val < 0.01 else '*' if p_val < 0.05 else ''
         
         if sig:
-            has_sig = True
-            # Position bracket at fixed position near top of range
-            if fixed_ylim:
-                bracket_y = fixed_ylim[1] - 0.08  # Just below 1.0
-                text_y = bracket_y + 0.015  # Very close to bracket
+            # Use provided asterisk_y or calculate from data
+            if asterisk_y is not None:
+                bracket_y = asterisk_y - 0.03
+                text_y = asterisk_y
+            elif fixed_ylim:
+                bracket_y = fixed_ylim[1] * 0.92
+                text_y = bracket_y + 0.02
             else:
                 all_vals = np.concatenate([fc_vals, cl_vals])
                 y_max = np.max(all_vals)
@@ -127,17 +130,19 @@ def draw_paired_violin(ax, fc_vals, cl_vals, fc_subj_ids, cl_subj_ids, ylabel, t
                    [bracket_y - 0.03, bracket_y, bracket_y, bracket_y - 0.03], 
                    'k-', lw=1.5)
             
-            # Place asterisks CLOSE to the bracket (just above)
+            # Place asterisks close to bracket
             ax.text((pos_fc + pos_cl) / 2, text_y, sig, ha='center', va='bottom', 
                    fontsize=14, fontweight='bold')
     
     # Set y-axis limits
     if fixed_ylim:
-        if has_sig:
-            # Extend to 1.1 to show asterisk
-            ax.set_ylim(fixed_ylim[0], 1.1)
-        else:
-            ax.set_ylim(fixed_ylim)
+        ax.set_ylim(fixed_ylim)
+    
+    # Hide top tick if requested
+    if hide_top_tick:
+        yticks = ax.get_yticks()
+        yticklabels = [f'{t:.1f}' if t < fixed_ylim[1] else '' for t in yticks]
+        ax.set_yticks([t for t in yticks if t <= 1.0])
     
     # Formatting
     ax.set_title(title, fontsize=TITLE_SIZE, fontweight='bold')
@@ -156,18 +161,18 @@ def generate_negotiation_outcomes(df):
     fc = df[df['Condition'] == 'FC'].set_index('Subject_ID')
     cl = df[df['Condition'] == 'CL'].set_index('Subject_ID')
     
-    # 4 metrics with their y-axis ranges
+    # 4 metrics with their y-axis ranges (Agent Utility ends at 1.0, not 1.1)
     metrics = [
-        ('Agent_Utility', 'Utility ($U$)', 'Agent', (0.4, 1.0)),
-        ('Human_Utility', 'Utility ($U$)', 'Participant', (0.4, 1.0)),
-        ('Agreement_Rounds', 'Rounds', 'Agreement Rounds', None),  # Auto-scale
-        ('Nash_Distance', 'Distance', 'Nash Distance', (0, 0.5))
+        ('Agent_Utility', 'Utility ($U$)', 'Agent', (0.4, 1.0), 0.96),  # asterisk at 0.96
+        ('Human_Utility', 'Utility ($U$)', 'Participant', (0.4, 1.0), None),
+        ('Agreement_Rounds', 'Rounds', 'Agreement Rounds', None, None),
+        ('Nash_Distance', 'Distance', 'Nash Distance', (0, 0.5), None)
     ]
     
     fig, axes = plt.subplots(2, 2, figsize=(10, 10))
     axes = axes.flatten()
     
-    for idx, (col, ylabel, title, ylim) in enumerate(metrics):
+    for idx, (col, ylabel, title, ylim, ast_y) in enumerate(metrics):
         ax = axes[idx]
         
         fc_data = fc[col].dropna()
@@ -179,36 +184,38 @@ def generate_negotiation_outcomes(df):
             fc_data.index.tolist(), cl_data.index.tolist(),
             ylabel, title,
             show_ylabel=(idx % 2 == 0),
-            fixed_ylim=ylim
+            fixed_ylim=ylim,
+            asterisk_y=ast_y
         )
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'NegotiationOutcomes.png'), dpi=300, bbox_inches='tight')
     plt.savefig(os.path.join(OUTPUT_DIR, 'NegotiationOutcomes.pdf'), bbox_inches='tight')
     plt.close()
-    print(f"Saved: NegotiationOutcomes.png (4 panels with Nash Distance)")
+    print(f"Saved: NegotiationOutcomes.png (4 panels)")
 
 def generate_behavioral_analysis(df):
     """Generate BehavioralAnalysis.png - 2x3 violin plots with paired lines
-    All panels have y-axis 0-1.0 (extend to 1.1 if asterisk needed)
+    All panels have y-axis 0-1.2, but hide 1.2 tick (show only 0.0-1.0)
+    Asterisk positioned higher in Concession panel
     """
     
     fc = df[df['Condition'] == 'FC'].set_index('Subject_ID')
     cl = df[df['Condition'] == 'CL'].set_index('Subject_ID')
     
     move_cols = [
-        ('Concession_Rate', 'Concession'),
-        ('Nice_Rate', 'Nice'),
-        ('Fortunate_Rate', 'Fortunate'),
-        ('Unfortunate_Rate', 'Unfortunate'),
-        ('Selfish_Rate', 'Selfish'),
-        ('Silent_Rate', 'Silent')
+        ('Concession_Rate', 'Concession', 1.12),  # Asterisk at 1.12 (higher)
+        ('Nice_Rate', 'Nice', None),
+        ('Fortunate_Rate', 'Fortunate', None),
+        ('Unfortunate_Rate', 'Unfortunate', None),
+        ('Selfish_Rate', 'Selfish', None),
+        ('Silent_Rate', 'Silent', None)
     ]
     
     fig, axes = plt.subplots(2, 3, figsize=(12, 8))
     axes = axes.flatten()
     
-    for idx, (col, title) in enumerate(move_cols):
+    for idx, (col, title, ast_y) in enumerate(move_cols):
         ax = axes[idx]
         
         fc_data = fc[col].dropna()
@@ -220,14 +227,16 @@ def generate_behavioral_analysis(df):
             fc_data.index.tolist(), cl_data.index.tolist(),
             'Ratio', title,
             show_ylabel=(idx % 3 == 0),
-            fixed_ylim=(0, 1.0)  # Fixed y-axis for all behavioral metrics
+            fixed_ylim=(0, 1.2),  # Range to 1.2 for asterisk space
+            hide_top_tick=True,   # Hide 1.2 tick label
+            asterisk_y=ast_y
         )
     
     plt.tight_layout()
     plt.savefig(os.path.join(OUTPUT_DIR, 'BehavioralAnalysis.png'), dpi=300, bbox_inches='tight')
     plt.savefig(os.path.join(OUTPUT_DIR, 'BehavioralAnalysis.pdf'), bbox_inches='tight')
     plt.close()
-    print(f"Saved: BehavioralAnalysis.png (6 panels, y-axis 0-1.0)")
+    print(f"Saved: BehavioralAnalysis.png (6 panels, y-axis 0-1.2 with hidden top tick)")
 
 if __name__ == "__main__":
     print("=" * 60)
