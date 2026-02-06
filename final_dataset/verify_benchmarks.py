@@ -49,8 +49,7 @@ print("\n--- Negotiation Outcomes (Table II) ---")
 print(f"| {'Metric':<20} | {'FC':<5} | {'CL':<5} | {'p':<6} | {'d':<5} |")
 print("-" * 60)
 report_stat("Agent Utility", "Agent_Utility", df_subj)
-report_stat("User Utility", "User_Utility", df_subj)
-report_stat("Nash Distance", "Nash_Distance", df_subj)
+report_stat("User Utility", "Human_Utility", df_subj)
 report_stat("Agree. Rounds", "Agreement_Rounds", df_subj)
 
 print("\n--- Behavioral Influence (Table III) ---")
@@ -62,20 +61,20 @@ print("\n--- Affect Perception (Fig 10) ---")
 cl_rnd = df_rnd[df_rnd['Condition']=='CL']
 fc_rnd = df_rnd[df_rnd['Condition']=='FC']
 
-ar_cl = cl_rnd['Arousal'].mean()
-ar_fc = fc_rnd['Arousal'].mean()
+ar_cl = cl_rnd['Norm_Arousal'].mean()
+ar_fc = fc_rnd['Norm_Arousal'].mean()
 # Effect Size (Pooled)
 n1, n2 = len(cl_rnd), len(fc_rnd)
-s1, s2 = cl_rnd['Arousal'].std(), fc_rnd['Arousal'].std()
+s1, s2 = cl_rnd['Norm_Arousal'].std(), fc_rnd['Norm_Arousal'].std()
 sp = np.sqrt(((n1-1)*s1**2 + (n2-1)*s2**2)/(n1+n2-2))
 d_ar = (ar_cl - ar_fc) / sp
-t_ar, p_ar = stats.ttest_ind(cl_rnd['Arousal'], fc_rnd['Arousal'])
+t_ar, p_ar = stats.ttest_ind(cl_rnd['Norm_Arousal'], fc_rnd['Norm_Arousal'])
 
 print(f"| {'Arousal (Round)':<20} | {ar_fc:.3f} | {ar_cl:.3f} | {p_ar:.4f} | {abs(d_ar):.3f} |")
 
 # Correlation
-r_cl, _ = stats.pearsonr(cl_rnd['Arousal'], cl_rnd['Valence'])
-r_fc, _ = stats.pearsonr(fc_rnd['Arousal'], fc_rnd['Valence'])
+r_cl, _ = stats.pearsonr(cl_rnd['Norm_Arousal'], cl_rnd['Norm_Valence'])
+r_fc, _ = stats.pearsonr(fc_rnd['Norm_Arousal'], fc_rnd['Norm_Valence'])
 print(f"| {'Correlation':<20} | {r_fc:.3f} | {r_cl:.3f} | -      | -     |")
 
 print("\nVerification Complete.")

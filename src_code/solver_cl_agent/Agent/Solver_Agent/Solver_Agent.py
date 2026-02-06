@@ -474,7 +474,9 @@ class SolverAgent:
             current_magnitude = math.sqrt(valance ** 2 + arousal ** 2)
             
             # P_sign: Directional sign from net V-A change (Eq. 6)
-            p_sign = 1 if (delta_v + delta_a) >= 0 else -1
+            # Alpha coefficient for weighting arousal contribution (default: 1.0)
+            alpha = 1.0  # Adjustable: set alpha < 1.0 to dampen arousal influence
+            p_sign = 1 if (delta_v + alpha * delta_a) >= 0 else -1
             
             # P_rot: Rotation component using atan2 (Eq. 7)
             # δ_dot = Ẽ_{t-1} · Ẽ_t (dot product)

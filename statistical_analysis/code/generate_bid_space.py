@@ -17,10 +17,10 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', '..', 'assets')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# Domain XML paths
-DOMAIN_LOGS_DIR = "/Users/monurkeskin/Desktop/Ongoing Works/Human Robot Negotiation Cambridge Delft Research/Domain_Logs"
-AGENT_XML = os.path.join(DOMAIN_LOGS_DIR, "Holiday A/Abdul_Khan/Agent.xml")
-HUMAN_XML = os.path.join(DOMAIN_LOGS_DIR, "Holiday A/Abdul_Khan/Human.xml")
+# Domain XML paths (anonymized utility profiles)
+DOMAIN_DIR = os.path.join(SCRIPT_DIR, '..', 'data', 'domain')
+AGENT_XML = os.path.join(DOMAIN_DIR, "agent_utility.xml")
+HUMAN_XML = os.path.join(DOMAIN_DIR, "participant_utility.xml")
 
 def parse_utility_xml(xml_path):
     """Parse utility XML file to extract issue weights and value utilities.
